@@ -38,6 +38,10 @@ public class SchemaGenerator {
       return domainClasses;
     }
 
+    public void addDomainClass(Class<? extends SugarRecord> domainClass) {
+        getDomainClasses().add(domainClass);
+    }
+
     public void createDatabase(SQLiteDatabase sqLiteDatabase) {
         for (Class domain : getDomainClasses()) {
             createTable(domain, sqLiteDatabase);
