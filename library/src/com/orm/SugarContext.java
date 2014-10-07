@@ -4,15 +4,19 @@ import android.content.Context;
 
 public class SugarContext {
 
-    private static SugarContext instance = null;
-    private SugarDb sugarDb;
-    private Context context;
+    protected static SugarContext instance = null;
+    protected SugarDb sugarDb;
+    protected Context context;
+
+    public SugarContext() {
+
+    }
 
     private SugarContext(Context context) {
         this.context = context;
         this.sugarDb = new SugarDb(context);
     }
-    
+
     public static SugarContext getSugarContext() {
         if (instance == null) {
             throw new NullPointerException("SugarContext has not been initialized properly. Call SugarContext.init(Context) in your Application.onCreate() method and SugarContext.terminate() in your Application.onTerminate() method.");
