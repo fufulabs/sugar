@@ -22,26 +22,30 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.orm.util.ReflectionUtil.getDomainClasses;
-
 public class SchemaGenerator {
 
     private Context context;
+    private List<Class> domainClasses;
 
     public SchemaGenerator(Context context) {
         this.context = context;
     }
 
+    private List<Class> getDomainClasses() {
+      if (domainClasses == null) {
+        domainClasses = ReflectionUtil.getDomainClasses(context);
+      }
+      return domainClasses;
+    }
+
     public void createDatabase(SQLiteDatabase sqLiteDatabase) {
-        List<Class> domainClasses = getDomainClasses(context);
-        for (Class domain : domainClasses) {
+        for (Class domain : getDomainClasses()) {
             createTable(domain, sqLiteDatabase);
         }
     }
 
     public void doUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        List<Class> domainClasses = getDomainClasses(context);
-        for (Class domain : domainClasses) {
+        for (Class domain : getDomainClasses()) {
             try {  // we try to do a select, if fails then (?) there isn't the table
                 sqLiteDatabase.query(NamingHelper.toSQLName(domain), null, null, null, null, null, null);
             } catch (SQLiteException e) {
@@ -54,8 +58,7 @@ public class SchemaGenerator {
     }
 
     public void deleteTables(SQLiteDatabase sqLiteDatabase) {
-        List<Class> tables = getDomainClasses(context);
-        for (Class table : tables) {
+        for (Class table : getDomainClasses()) {
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + NamingHelper.toSQLName(table));
         }
     }
