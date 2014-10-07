@@ -12,7 +12,7 @@ import static com.orm.util.ManifestHelper.getDebugEnabled;
 
 public class SugarDb extends SQLiteOpenHelper {
 
-    private final SchemaGenerator schemaGenerator;
+    protected SchemaGenerator schemaGenerator;
     private SQLiteDatabase sqLiteDatabase;
 
     public SugarDb(Context context) {
