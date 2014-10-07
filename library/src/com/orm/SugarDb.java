@@ -21,6 +21,11 @@ public class SugarDb extends SQLiteOpenHelper {
         schemaGenerator = new SchemaGenerator(context);
     }
 
+    public SugarDb(Context context, String databaseName, int databaseVersion, boolean debugEnabled) {
+        super(context, databaseName, new SugarCursorFactory(debugEnabled), databaseVersion);
+        schemaGenerator = new SchemaGenerator(context);
+    }
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         schemaGenerator.createDatabase(sqLiteDatabase);
